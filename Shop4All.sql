@@ -185,3 +185,26 @@ FROM product p
 JOIN order_item oi ON p.product_id = oi.product_id
 Group By p.product_id
 ORDER BY sum(oi.quantity) DESC;
+
+select * from top_selling_products;
+
+-- Functions
+-- average price of product within a specific category
+DELIMITER //
+create function avg_price_of_a_category(category_id int)
+Returns decimal(10, 2)
+not deterministic
+reads sql data
+begin
+	declare result decimal(10, 2);
+	select avg(p.price) into result
+	from Product p
+	Join Product_Category pc on pc.product_id = p.product_id
+	Join Category c on c.category_id = pc.category_id
+	where c.category_id = category_id;
+	return result;
+end;
+//
+DELIMITER ;
+
+select avg_price_of_a_category(1);

@@ -167,16 +167,6 @@ SELECT BIN_TO_UUID(customer_id), name FROM customer;
 SELECT BIN_TO_UUID(address_id), street_address FROM Shipping_Address;
 SELECT BIN_TO_UUID(customer_shipping_id) FROM Customer_Shipping_Address;
 
-select * from product;
-select * from Category;
-select * from Product_Category;
-select * from inventory;
-select * from customer;
-select * from Postal_Code;
-select * from Shipping_Address;
-select * from Customer_Shipping_Address;
-select * from orders;
-
 -- VIEWS
 -- view to get specific order details -- 
 create or replace view top_selling_products as
@@ -208,3 +198,32 @@ end;
 DELIMITER ;
 
 select avg_price_of_a_category(1);
+
+-- Database Procedures
+-- Monthly sales report
+DELIMITER //
+create procedure getMonthlyReport()
+begin
+	select sum(oi.unit_price*oi.quantity) as `Total Revenue`, sum(oi.quantity) as `Total units sold per month`, year(o.order_date) as `Year`, month(o.order_date) as `Month`
+	from order_item oi
+	join orders o on o.order_id = oi.order_id
+    join product p on p.product_id = oi.product_id
+	group by year(o.order_date), month(o.order_date)
+    order by year(o.order_date), month(o.order_date);
+end;
+//
+DELIMITER ;
+
+CALL getMonthlyReport();
+
+select * from product;
+select * from Category;
+select * from Product_Category;
+select * from inventory;
+select * from customer;
+select * from Postal_Code;
+select * from Shipping_Address;
+select * from Customer_Shipping_Address;
+select * from orders;
+select * from order_item;
+

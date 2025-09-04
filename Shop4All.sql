@@ -216,6 +216,8 @@ DELIMITER ;
 
 CALL getMonthlyReport();
 
+show indexes from order_item;
+
 select * from product;
 select * from Category;
 select * from Product_Category;
@@ -227,3 +229,40 @@ select * from Customer_Shipping_Address;
 select * from orders;
 select * from order_item;
 
+-- Roles Creation -- 
+create role 'primary_role'@'localhost';
+create role 'reporting_role'@'localhost';
+create role 'inventory_manager_role'@'localhost';
+create role 'order_manager_role'@'localhost';
+
+-- Granting Permissions to Roles -- 
+grant select, insert, update, delete on shop4Alldb.*
+to 'primary_role'@'localhost';
+
+grant select on shop4Alldb.*
+to 'reporting_role'@'localhost';
+
+grant select, update, insert, delete on shop4Alldb.product 
+to 'inventory_manager_role'@'localhost';
+grant select, update, insert, delete on shop4Alldb.Inventory 
+to 'inventory_manager_role'@'localhost';
+
+grant select, update, insert, delete on shop4Alldb.orders 
+to 'order_manager_role'@'localhost';
+grant select, update, insert, delete on shop4Alldb.order_item
+to 'order_manager_role'@'localhost';
+
+-- creating users
+create user 'primary_user_1'@'localhost' identified by 'primary123@#';
+create user 'reporting_user_1'@'localhost' identified by 'reporter123@#';
+create user 'inventory_manager_user_1'@'localhost' identified by 'inventory123@#';
+create user 'order_manager_1'@'localhost' identified by 'order123@#';
+
+-- Assigning roles to users 
+grant 'primary_role'@'localhost' to 'primary_user_1'@'localhost';
+grant 'reporting_role'@'localhost' to 'reporting_user_1'@'localhost';
+grant 'inventory_manager_role'@'localhost' to 'inventory_manager_user_1'@'localhost';
+grant 'order_manager_role'@'localhost' to 'order_manager_1'@'localhost';
+
+SELECT User, Host FROM mysql.user;
+SHOW GRANTS FOR 'primary_user_1'@'localhost';

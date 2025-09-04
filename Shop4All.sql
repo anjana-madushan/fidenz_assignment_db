@@ -91,3 +91,71 @@ constraint FK_Order_Product_Product FOREIGN KEY (product_id) references Product(
 
 show tables from Shop4AllDB;
 select * from orders;
+
+-- Insert Data 
+insert into product(name, description, price) values ("Dell Inspiron IB 3530 Laptop", "13th Gen I7, 8GB RAM, 512GB SSD, 15.6 Display (Silver)",  310999), 
+("Usha Room Heater", "Usha Room Heater 423/8/2T", 22500), 
+("Symphony Air Cooler - DiET 12i", "Diet 12i functions on as little as 80 watts of power. It performs silently without a hush with its blower delivering better cooling and a powerful air throw.", 38000), 
+("ASUS Zenbook S 14 UX5406SA-PZ365WS Laptop", "ASUS Zenbook S 14 UX5406SA-PZ365WS - 14th Gen Ultra 7, 32GB RAM, 1TB, Touch Screen, OLED, Scandinavian White", 659999);
+
+insert into Inventory values (1, 25), (2, 8), (3, 15), (4, 18);
+
+insert into Category(name) values ("Electronics"), ("Kitchen"), ("BedRoom"), ("Digital"), ("Office");
+insert into Product_Category values (1, 1), (1, 4), (2, 3), (2, 1), (3, 1), (3, 3), (4, 1), (4, 4);
+
+insert into Customer values 
+(UUID_TO_BIN(UUID()), "Anjana Pasindu", "pbapmadushan123@gmail.com", "+94762974568"),
+(UUID_TO_BIN(UUID()), "John Doe", "johnDoe@gmail.com", "+94762574568"),
+(UUID_TO_BIN(UUID()), "Kane", "kane@gmail.com", "+11752974568"),
+(UUID_TO_BIN(UUID()), "jane", "jane23@gmail.com", "+0252874568"),
+(UUID_TO_BIN(UUID()), "Bobby Singer", "booby123@gmail.com", "+45761114568");
+
+insert into Postal_Code values 
+('12345', "Sri Lanka", "Kottawa", "Western"),
+('31000', "Sri Lanka", "Trincomalee", "Eastern"),
+('10115', "Sri Lanka", "Malabe", "Western"),
+('75462', "United States", "Paris", "Texas"),
+('1011 AB', "Nederland", "Amsterdam", ""), 
+('2678 CZ', "Nederland", "De Lier", "");
+
+insert into Shipping_Address values 
+(UUID_TO_BIN(UUID()), "Hospital Road", "12345"),
+(UUID_TO_BIN(UUID()), "3rd Lane", "10115"),
+(UUID_TO_BIN(UUID()), "Park Lane", "31000"),
+(UUID_TO_BIN(UUID()), "Nz Avenue", "75462"),
+(UUID_TO_BIN(UUID()), "Train Avenue", "75462"),
+(UUID_TO_BIN(UUID()), "Dht Lane", "1011 AB"),
+(UUID_TO_BIN(UUID()), "Cmsar Avenue", "2678 CZ");
+
+insert into Customer_Shipping_Address values 
+(UUID_TO_BIN(UUID()), UUID_TO_BIN("4d9c8af0-8948-11f0-8a3d-fc4482c7c571"), UUID_TO_BIN("63a87a22-894b-11f0-8a3d-fc4482c7c571")),
+(UUID_TO_BIN(UUID()), UUID_TO_BIN("4d9c8af0-8948-11f0-8a3d-fc4482c7c571"), UUID_TO_BIN("63a89d99-894b-11f0-8a3d-fc4482c7c571")),
+(UUID_TO_BIN(UUID()), UUID_TO_BIN("4d9c8af0-8948-11f0-8a3d-fc4482c7c571"), UUID_TO_BIN("63a89ff7-894b-11f0-8a3d-fc4482c7c571")),
+(UUID_TO_BIN(UUID()), UUID_TO_BIN("4d9cb215-8948-11f0-8a3d-fc4482c7c571"), UUID_TO_BIN("63a8a0c8-894b-11f0-8a3d-fc4482c7c571")),
+(UUID_TO_BIN(UUID()), UUID_TO_BIN("4d9cb30d-8948-11f0-8a3d-fc4482c7c571"), UUID_TO_BIN("63a8a164-894b-11f0-8a3d-fc4482c7c571")),
+(UUID_TO_BIN(UUID()), UUID_TO_BIN("4d9cb3a2-8948-11f0-8a3d-fc4482c7c571"), UUID_TO_BIN("63a8a2af-894b-11f0-8a3d-fc4482c7c571")),
+(UUID_TO_BIN(UUID()), UUID_TO_BIN("4d9cb426-8948-11f0-8a3d-fc4482c7c571"), UUID_TO_BIN("63a8a20f-894b-11f0-8a3d-fc4482c7c571"));
+
+
+insert into Orders values 
+(UUID_TO_BIN(UUID()), UUID_TO_BIN("1812fd92-894d-11f0-8a3d-fc4482c7c571"), "2025-05-25", 310999),
+(UUID_TO_BIN(UUID()), UUID_TO_BIN("181366d4-894d-11f0-8a3d-fc4482c7c571"), "2025-05-25", 310999),
+(UUID_TO_BIN(UUID()), UUID_TO_BIN("181366d4-894d-11f0-8a3d-fc4482c7c571"), "2025-05-26", 45000),
+(UUID_TO_BIN(UUID()), UUID_TO_BIN("18136912-894d-11f0-8a3d-fc4482c7c571"), "2025-07-21", 60500),
+(UUID_TO_BIN(UUID()), UUID_TO_BIN("18136a35-894d-11f0-8a3d-fc4482c7c571"), "2025-08-01", 310999),
+(UUID_TO_BIN(UUID()), UUID_TO_BIN("18136af8-894d-11f0-8a3d-fc4482c7c571"), "2025-09-04", 659999),
+(UUID_TO_BIN(UUID()), UUID_TO_BIN("18136ba0-894d-11f0-8a3d-fc4482c7c571"), "2025-07-25", 22500),
+(UUID_TO_BIN(UUID()), UUID_TO_BIN("18136c6f-894d-11f0-8a3d-fc4482c7c571"), "2025-06-02", 76000),
+(UUID_TO_BIN(UUID()), UUID_TO_BIN("18136c6f-894d-11f0-8a3d-fc4482c7c571"), "2025-06-08", 659999);
+
+insert into Order_Item values 
+(UUID_TO_BIN("f4e44908-894f-11f0-8a3d-fc4482c7c571"), 1, 1, 310999),
+(UUID_TO_BIN("f4e521da-894f-11f0-8a3d-fc4482c7c571"), 1, 1, 310999),
+(UUID_TO_BIN("f4e52a72-894f-11f0-8a3d-fc4482c7c571"), 2, 2, 22500),
+(UUID_TO_BIN("f4e52b7a-894f-11f0-8a3d-fc4482c7c571"), 2, 1, 22500),
+(UUID_TO_BIN("f4e52b7a-894f-11f0-8a3d-fc4482c7c571"), 3, 1, 38000),
+(UUID_TO_BIN("f4e52be3-894f-11f0-8a3d-fc4482c7c571"), 1, 1, 310999),
+(UUID_TO_BIN("f4e52c3b-894f-11f0-8a3d-fc4482c7c571"), 4, 1, 659999),
+(UUID_TO_BIN("f4e52ca6-894f-11f0-8a3d-fc4482c7c571"), 2, 1, 22500),
+(UUID_TO_BIN("f4e52d02-894f-11f0-8a3d-fc4482c7c571"), 3, 2, 38000),
+(UUID_TO_BIN("f4e52d70-894f-11f0-8a3d-fc4482c7c571"), 4, 1, 659999);

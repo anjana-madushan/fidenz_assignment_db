@@ -159,3 +159,29 @@ insert into Order_Item values
 (UUID_TO_BIN("f4e52ca6-894f-11f0-8a3d-fc4482c7c571"), 2, 1, 22500),
 (UUID_TO_BIN("f4e52d02-894f-11f0-8a3d-fc4482c7c571"), 3, 2, 38000),
 (UUID_TO_BIN("f4e52d70-894f-11f0-8a3d-fc4482c7c571"), 4, 1, 659999);
+
+select BIN_TO_UUID(order_id), total_price from orders;
+select * from product;
+
+SELECT BIN_TO_UUID(customer_id), name FROM customer;
+SELECT BIN_TO_UUID(address_id), street_address FROM Shipping_Address;
+SELECT BIN_TO_UUID(customer_shipping_id) FROM Customer_Shipping_Address;
+
+select * from product;
+select * from Category;
+select * from Product_Category;
+select * from inventory;
+select * from customer;
+select * from Postal_Code;
+select * from Shipping_Address;
+select * from Customer_Shipping_Address;
+select * from orders;
+
+-- VIEWS
+-- view to get specific order details -- 
+create or replace view top_selling_products as
+SELECT p.product_id, p.name, p.description, sum(oi.quantity) as 'Total No of Units Sold'
+FROM product p
+JOIN order_item oi ON p.product_id = oi.product_id
+Group By p.product_id
+ORDER BY sum(oi.quantity) DESC;

@@ -225,20 +225,22 @@ create role 'inventory_manager_role'@'localhost';
 create role 'order_manager_role'@'localhost';
 
 -- Granting Permissions to Roles -- 
-grant select, insert, update, delete on shop4Alldb.*
+
+-- primary roles only can have  select, insert, update all the databases
+grant select, insert, update on shop4Alldb.*
 to 'primary_role'@'localhost';
 
-revoke delete on shop4Alldb.* 
-from 'primary_role'@'localhost';
-
+-- reporting roles only can have select and retrive all the data from the databases
 grant select on shop4Alldb.*
 to 'reporting_role'@'localhost';
 
+-- inventory roles only can execute crud operations to the product and inventory tables
 grant select, update, insert, delete on shop4Alldb.product 
 to 'inventory_manager_role'@'localhost';
 grant select, update, insert, delete on shop4Alldb.Inventory 
 to 'inventory_manager_role'@'localhost';
 
+-- order_manager_role roles only can execute crud operations to the order and order item tables
 grant select, update, insert, delete on shop4Alldb.orders 
 to 'order_manager_role'@'localhost';
 grant select, update, insert, delete on shop4Alldb.order_item
@@ -258,7 +260,7 @@ grant 'order_manager_role'@'localhost' to 'order_manager_1'@'localhost';
 
 SELECT User, Host FROM mysql.user;
 SHOW GRANTS FOR 'primary_user_1'@'localhost';
-SELECT CURRENT_ROLE();
+
 -- Transactions
 
 -- adding a new product 
@@ -316,3 +318,5 @@ select * from Customer_Shipping_Address;
 select BIN_TO_UUID(customer_shipping_id), BIN_TO_UUID(customer_id) from Customer_Shipping_Address;
 select * from orders;
 select * from order_item;
+
+SELECT User, Host FROM mysql.user;

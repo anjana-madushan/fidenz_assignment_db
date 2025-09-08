@@ -218,17 +218,6 @@ CALL getMonthlyReport();
 
 show indexes from order_item;
 
-select * from product;
-select * from Category;
-select * from Product_Category;
-select * from inventory;
-select * from customer;
-select * from Postal_Code;
-select * from Shipping_Address;
-select * from Customer_Shipping_Address;
-select * from orders;
-select * from order_item;
-
 -- Roles Creation -- 
 create role 'primary_role'@'localhost';
 create role 'reporting_role'@'localhost';
@@ -238,6 +227,9 @@ create role 'order_manager_role'@'localhost';
 -- Granting Permissions to Roles -- 
 grant select, insert, update, delete on shop4Alldb.*
 to 'primary_role'@'localhost';
+
+revoke delete on shop4Alldb.* 
+from 'primary_role'@'localhost';
 
 grant select on shop4Alldb.*
 to 'reporting_role'@'localhost';
@@ -266,3 +258,61 @@ grant 'order_manager_role'@'localhost' to 'order_manager_1'@'localhost';
 
 SELECT User, Host FROM mysql.user;
 SHOW GRANTS FOR 'primary_user_1'@'localhost';
+SELECT CURRENT_ROLE();
+-- Transactions
+
+-- adding a new product 
+START TRANSACTION;
+
+insert into product(name, description, price) values ("Midea Kitchen Machine 600W - MJ-KM6001W", "Stainless Steel Mixing Bowl (4L SUS bowl for CE version)", 29999);
+
+set @productId = LAST_INSERT_ID();
+
+insert into inventory(product_id, quantity_in_stock) values (@productId, 10); 
+insert into Product_Category(product_id, category_id) values (@productId, 1);
+insert into Product_Category(product_id, category_id) values (@productId, 2);
+
+COMMIT;
+
+-- creating a new order
+START TRANSACTION;
+
+set @order_id = UUID_TO_BIN(UUID());
+
+insert into orders (order_id, customer_shipping_id, date, total_price) values (@order_id, UUID_TO_BIN("18136a35-894d-11f0-8a3d-fc4482c7c571"), "2025-05-25", 1349497);
+
+insert into order_item values 
+(1, @order_id, 2, 310999),
+(2, @order_id, 3, 22500),
+(4, @order_id, 1, 659999);
+
+update inventory set quantity_in_stock = quantity_in_stock - 2 where product_id = 1;
+update inventory set quantity_in_stock = quantity_in_stock - 3 where product_id = 2;
+update inventory set quantity_in_stock = quantity_in_stock - 1 where product_id = 4;
+
+COMMIT;
+
+-- adding a shipping address for existing user
+START TRANSACTION;
+
+set @shipping_address_id = UUID_TO_BIN(UUID());
+set @customer_shipping_address_id = UUID_TO_BIN(UUID());
+set @postal_code = '12045';
+
+insert into postal_code(postal_code, country, city, state_province) values (@postal_code, "Sri Lanka", "Dopme road", "");
+insert into shipping_address(address_id, street_address, postal_code) values (@shipping_address_id, 'Wennappuwa', @postal_code);
+insert into Customer_Shipping_Address(customer_shipping_id, customer_id, address_id) values (@customer_shipping_address_id, UUID_TO_BIN("4d9c8af0-8948-11f0-8a3d-fc4482c7c571"), @shipping_address_id);
+
+COMMIT;
+
+select * from product;select * from inventory;
+select * from Product_Category;
+select * from Category;
+select * from inventory;
+select BIN_TO_UUID(customer_id), name from customer;
+select * from Postal_Code;
+select * from Shipping_Address;
+select * from Customer_Shipping_Address;
+select BIN_TO_UUID(customer_shipping_id), BIN_TO_UUID(customer_id) from Customer_Shipping_Address;
+select * from orders;
+select * from order_item;
